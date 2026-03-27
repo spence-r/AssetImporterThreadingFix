@@ -6,7 +6,7 @@ namespace ThreadingFix
     public class Mod : IUserMod
     {
         public string Name => "Asset Import Threading Fix";
-        public string Description => "Fixes TaskDistributor thread leak in the asset editor's LOD generation that causes 'too many threads' during bulk imports.";
+        public string Description => "Fixes thread leak in the asset editor's LOD generation.";
 
         public void OnEnabled()
         {
