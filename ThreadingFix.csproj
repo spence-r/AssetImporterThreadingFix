@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>ThreadingFix</AssemblyName>
+    <RootNamespace>ThreadingFix</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+
+    <!-- Cities: Skylines paths -->
+    <CitiesPath>I:\Steam\steamapps\common\Cities_Skylines</CitiesPath>
+    <CitiesManagedPath>$(CitiesPath)\Cities_Data\Managed</CitiesManagedPath>
+    <ModsPath>$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods</ModsPath>
+  </PropertyGroup>
+
+  <!-- CitiesHarmony NuGet package -->
+  <ItemGroup>
+    <PackageReference Include="CitiesHarmony.API" Version="2.2.0" />
+  </ItemGroup>
+
+  <!-- Game assembly references -->
+  <ItemGroup>
+    <Reference Include="ICities">
+      <HintPath>$(CitiesManagedPath)\ICities.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ColossalManaged">
+      <HintPath>$(CitiesManagedPath)\ColossalManaged.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(CitiesManagedPath)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(CitiesManagedPath)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Copy output to Cities: Skylines Mods folder after build -->
+  <Target Name="DeployMod" AfterTargets="Build">
+    <PropertyGroup>
+      <ModDeployPath>$(ModsPath)\ThreadingFix</ModDeployPath>
+    </PropertyGroup>
+    <MakeDir Directories="$(ModDeployPath)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModDeployPath)" />
+    <Copy SourceFiles="$(TargetDir)CitiesHarmony.API.dll" DestinationFolder="$(ModDeployPath)" Condition="Exists('$(TargetDir)CitiesHarmony.API.dll')" />
+  </Target>
+
+</Project>
